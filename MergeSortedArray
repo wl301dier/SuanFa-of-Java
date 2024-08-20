@@ -70,6 +70,7 @@
  *         Merged array: 1 2 2 3 5 6
  */
 
+方法一（Example 1）
 package arrays;
 
 public class MergeSortedArray {//合并两个有序数组
@@ -113,3 +114,90 @@ public class MergeSortedArray {//合并两个有序数组
         }
     }
 }
+
+方法二（Example 2）
+public class MergeSortedArray1 {
+    private static void merge(int[] nums1, int m, int[] nums2, int n, int[] nums) {
+        int p1 = 0;     //第一个数组的初始下标
+        int p2 = 0;     //第二个数组的初始下标
+        int p = 0;      //两个数组合并成新数组的初始下标
+
+        //两个数组都不为空
+        while(p1 < m && p2 < n){
+            //nums1数组下标p1位置的值大于nums2数组下标p2位置的值
+            if (nums1[p1]>nums2[p2]){
+                //将nums2数组下标p2位置的值赋给nums新数组下标p位置的值
+                nums[p] = nums2[p2];
+                //nums2数组下标p2往后移一位
+                p2++;
+            }else {
+                //nums1数组下标p1位置的值小于等于nums2数组下标p2位置的值
+                nums[p] = nums1[p1];
+                //nums1数组下标p1往后移一位
+                p1++;
+            }
+            //两个数组每合并完成一次，nums新数组下标p就往后移一位
+            p++;
+        }
+
+        //数组2为空
+        while (p1 < m){
+            //将nums1数组下标p1位置的值赋给nums新数组下标p位置的值
+            nums[p] = nums1[p1];
+            //nums1数组下标p1往后移一位
+            p1++;
+            //nums数组下标p往后移一位
+            p++;
+        }
+
+        //数组1为空
+        while (p2 < n){
+            //将nums2数组下标p2位置的值赋给nums新数组下标p位置的值
+            nums[p] = nums2[p2];
+            //nums2数组下标p2往后移一位
+            p2++;
+            //nums数组下标p往后移一位
+            p++;
+        }
+    }
+
+方法三（Example 3）
+private static void merge(int[] nums1, int m, int[] nums2, int n) {
+        //数组的复制 arraycopy(源数组,源数组的起始下标,目标数组,目标数组的起始下标,要复制的元素个数)
+        System.arraycopy(nums2, 0, nums1, 3, 3);
+        //调用数组的排序方法sort()，对合并后的数组元素进行排序
+        Arrays.sort(nums1);
+}
+
+方法四（Example 4）
+private static void merge(int[] nums1, int m, int[] nums2, int n) {
+        int[] nums = new int[m];
+        System.arraycopy(nums1, 0, nums, 0, m);
+
+
+        int p1 = 0; //设置指针p1,指向数组nums
+        int p2 = 0; //设置指针p2,指向数组nums2
+        int p = 0;  //设置指针p,指向数组nums1
+
+        //比较指针p1和p2指向的数字，将较小数字存入到nums1后，指针后移，直到所有数字比较完毕
+        while (p1 < m && p2 < n) {
+            if(nums[p1] < nums2[p2]){
+                  nums1[p] = nums[p1];
+                  p1++;
+              }else{
+                  nums1[p] = nums2[p2];
+                  p2++;
+              }
+              p++;
+        }
+
+        // 如果 nums 中还有剩余元素，拷贝到 nums1 的剩余位置
+        if (p1 < m) {
+            System.arraycopy(nums, p1, nums1, p, m - p1);
+        }
+
+        // 如果 nums2 中还有剩余元素，拷贝到 nums1 的剩余位置
+        if (p2 < n) {
+            System.arraycopy(nums2, p2, nums1, p, n - p2);
+        }
+    }
